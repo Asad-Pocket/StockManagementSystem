@@ -1,0 +1,44 @@
+﻿@model IEnumerable<StockManagementSystem.Models.Company>
+@{
+    Layout = "_Layout";
+}
+
+<div class="mt-2" style="width:50%">
+    <div class="row">
+        <h2>Company List</h2>
+        <div class="col-md-4">
+            <a href="/Company/Create" class="btn btn-success">Create Company</a>
+        </div>
+        <p>
+
+        </p>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>name</th>
+                    <th>Action</th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelitem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+
+                        <td>
+                            <a class="btn btn-success" href="/Company/Update?id=@item.Id">Edit</a>
+                            <a class="btn btn-danger" href="/Company/Delete?id=@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+
+            </thead>
+
+        </table>
+    </div>
+
+</div>

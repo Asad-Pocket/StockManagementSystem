@@ -1,0 +1,53 @@
+﻿@using StockManagementSystem.Models;
+@model StockManagementSystem.Models.Item
+
+@{
+    IEnumerable<Category>? _catagories = ViewData["_cat"] as IEnumerable<Category>;
+    IEnumerable<Company>? _company = ViewData["_com"] as IEnumerable<Company>;
+    ViewData["Title"] = "Update";
+    Layout = "_Layout";
+}
+<div class="mt-2" style="width:50%">
+    <form asp-action="Update">
+        <input asp-for="Id" type="hidden" class="form-control">
+        <h2>Edit Item</h2>
+        <div class="mb-3">
+
+            <label asp-for="Name" class="form-label">Name</label>
+            <input asp-for="Name" type="text" class="form-control">
+            <span class="text-danger" asp-validation-for="Name"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Quantity" class="form-label">Quantity</label>
+            <input asp-for="Quantity" type="number" class="form-control">
+            <span class="text-danger" asp-validation-for="Quantity"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="ReOrderLevel" class="form-label">ReOrder Level</label>
+            <input asp-for="ReOrderLevel" type="number" class="form-control">
+            <span class="text-danger" asp-validation-for="ReOrderLevel"></span>
+        </div>
+        <label asp-for="CategoryId" class="mb-1" for="Category">Category</label>
+        <select class="form-select mt-2" id="Category" asp-for="CategoryId">
+            @foreach (var x in _catagories)
+            {
+                <option asp-for="CategoryId" value="@x.Id">@x.Type</option>
+            }
+
+        </select>
+        <label asp-for="CompanyId" class="mb-1" for="Company">Company</label>
+        <select class="form-select mt-2" id="Company" P asp-for="CompanyId">
+            @foreach (var y in _company)
+            {
+                <option asp-for="Companyid" value="@y.Id">@y.Name</option>
+            }
+
+        </select>
+        <p>
+
+
+        </p>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a href="/Item/Show" class="btn btn-primary">Show All Items</a>
+    </form>
+</div>

@@ -1,0 +1,19 @@
+﻿@model StockManagementSystem.Models.Category
+@{
+    Layout = "_Layout";
+}
+<div class="mt-2" style="width:50%">
+    <form asp-action="Update">
+        <input asp-for="Id" type="hidden" class="form-control">
+        <h2>Edit Category</h2>
+
+        <div class="mb-3">
+            <label asp-for="Type" class="form-label">Type</label>
+            <input asp-for="Type" type="text" class="form-control">
+            <span class="text-danger" asp-validation-for="Type"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a href="/Category/Show" class="btn btn-primary">Back</a>
+    </form>
+</div>

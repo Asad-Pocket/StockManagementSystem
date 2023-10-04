@@ -1,0 +1,73 @@
+﻿@using StockManagementSystem.Models;
+@model IEnumerable<StockManagementSystem.Models.Item>
+@{
+    IEnumerable<Category>? _categories = ViewData["_category"] as IEnumerable<Category>;
+    IEnumerable<Company>? _company = ViewData["_comp"] as IEnumerable<Company>;
+    Layout = "_Layout";
+}
+
+<div class="mt-2" style="width:50%">
+    <div class="row">
+        <h2>Item List</h2>
+        <div class="col-md-4">
+            <a href="/Item/Create" class="btn btn-success">Create Item</a>
+        </div>
+        <p>
+
+
+        </p>
+        <form mathod="Get" asp-action="DisplayItems">
+            <p>
+                <input type="search" placeholder="Enter Item Name....." @ViewData["DisplayItems"] name="searchString" style="width:300px;" />
+                <input <a href="/Item/SearchItem" type="submit" value="Search" class="btn btn-primary" />
+            </p>
+        </form>
+        <table class="table table-striped"border="0">
+           
+            <thead>
+                <tr>
+                    
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>ReOrder Level</th>
+                    <th>Catagory</th>
+                    <th>Company</th>
+                    <th>Action</th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ReOrderLevel)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Category.Type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Company.Name)
+                        </td>
+                        <p>
+
+
+                        </p>
+                        <td>
+                            <a class="btn btn-success" href="/Item/Update?id=@item.Id">Edit</a>
+                            <a class="btn btn-danger" href="/Item/Delete?id=@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+
+            </thead>
+
+        </table>
+    </div>
+
+</div>
+

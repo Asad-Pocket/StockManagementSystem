@@ -1,0 +1,57 @@
+﻿@using StockManagementSystem.Models;
+@model StockManagementSystem.Models.Category
+@{
+    IEnumerable<Category> categories = ViewData["Category"] as IEnumerable<Category>;
+    Layout = "_Layout";
+}
+<div class="mt-2" style="width:50%">
+    <form asp-action="Create">
+        <h3>Add Category</h3>
+        <p>
+
+
+        </p>
+        <div class="mb-3">
+            <label asp-for="Type" placeholder="Enter Category Name....." class="form-label">Enter Category Type</label>
+            <input asp-for="Type" type="text" class="form-control">
+            <span class="text-danger" asp-validation-for="Type"></span>
+        </div>
+        <p>
+
+
+        </p>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        
+        <p>
+
+
+        </p>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Type</th>
+                    <th>Action</th>
+
+                </tr>
+                @foreach (var item in categories)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Type)
+                        </td>
+                        <td>
+                            <a class="btn btn-success" href="/Category/Update?id=@item.Id">Edit</a>
+                            <a class="btn btn-danger" href="/Category/Delete?id=@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+
+            </thead>
+
+        </table>
+    </form>
+</div>

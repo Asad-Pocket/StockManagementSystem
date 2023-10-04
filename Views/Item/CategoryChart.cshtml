@@ -1,0 +1,33 @@
+﻿@model StockManagementSystem.Models.Category
+
+<canvas id="categoryChart" width="400" height="400"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var categoryCounts = @Html.Raw(ViewBag.CategoryCounts);
+    var categoryNames = categoryCounts.map(category => category.CategoryName);
+    var itemCounts = categoryCounts.map(category => category.ItemCount);
+
+    var ctx = document.getElementById('categoryChart').getContext('2d');
+    var categoryChart = new Chart(ctx, {
+        type: 'bar', // You can use 'bar' for a bar chart or 'pie' for a pie chart
+        data: {
+            labels: categoryNames,
+            datasets: [
+                {
+                    label: 'Item Count',
+                    data: itemCounts,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)'
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+

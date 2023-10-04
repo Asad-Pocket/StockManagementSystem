@@ -1,0 +1,44 @@
+﻿@model IEnumerable<StockManagementSystem.Models.Category>
+@{
+    Layout = "_Layout";
+}
+
+<div class="mt-2" style="width:50%">
+    <div class="row">
+        <h2>Catagory List</h2>
+        <div class="col-md-4">
+            <a href="/Category/Create" class="btn btn-success">Create Category</a>
+        </div>
+        <p>
+
+        </p>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Type</th>
+                    <th>Action</th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelitem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Type)
+                        </td>
+
+                        <td>
+                            <a class="btn btn-success" href="/Category/Update?id=@item.Id">Edit</a>
+                            <a class="btn btn-danger" href="/Category/Delete?id=@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+
+            </thead>
+
+        </table>
+    </div>
+
+</div>

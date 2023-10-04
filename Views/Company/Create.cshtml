@@ -1,0 +1,58 @@
+﻿@using StockManagementSystem.Models;
+@model StockManagementSystem.Models.Company
+
+@{
+    IEnumerable<Company> Companies = ViewData["_company"] as IEnumerable<Company>;
+    Layout = "_Layout";
+}
+<div class="mt-2" style="width:40%">
+    <form asp-action="Create">
+        <h3>Add New Company</h3>
+        <p>
+
+        </p>
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Enter Company Name</label>
+            <input asp-for="Name" type="text" class="form-control">
+            <span class="text-danger" asp-validation-for="Name"></span>
+        </div>
+
+        <p>
+
+
+        </p>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <p>
+
+
+
+        </p>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Type</th>
+                    <th>Action</th>
+                </tr>
+                @foreach (var item in Companies)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            <a class="btn btn-success" href="/Company/Update?id=@item.Id">Edit</a>
+                            <a class="btn btn-danger" href="/Company/Delete?id=@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+
+            </thead>
+
+        </table>
+
+    </form>
+</div>
