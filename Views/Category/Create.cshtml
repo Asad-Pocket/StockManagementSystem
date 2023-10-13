@@ -1,18 +1,17 @@
-﻿@using StockManagementSystem.Models;
-@model StockManagementSystem.Models.Category
+﻿
+@model Category
 @{
     IEnumerable<Category> categories = ViewData["Category"] as IEnumerable<Category>;
     Layout = "_Layout";
 }
+<p><h3 style="color : brown">Add New Category</h3></p>
 <div class="mt-2" style="width:50%">
     <form asp-action="Create">
-        <h3>Add Category</h3>
         <p>
-
 
         </p>
         <div class="mb-3">
-            <label asp-for="Type" placeholder="Enter Category Name....." class="form-label">Enter Category Type</label>
+            <label asp-for="Type" placeholder="Enter Category Name....." class="form-label"><b>Enter Category Type</b></label>
             <input asp-for="Type" type="text" class="form-control">
             <span class="text-danger" asp-validation-for="Type"></span>
         </div>

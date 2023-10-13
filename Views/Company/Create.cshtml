@@ -5,14 +5,14 @@
     IEnumerable<Company> Companies = ViewData["_company"] as IEnumerable<Company>;
     Layout = "_Layout";
 }
+<p><h3 style="color : brown">Add New Company</h3></p>
 <div class="mt-2" style="width:40%">
     <form asp-action="Create">
-        <h3>Add New Company</h3>
         <p>
 
         </p>
         <div class="mb-3">
-            <label asp-for="Name" class="form-label">Enter Company Name</label>
+            <label asp-for="Name" class="form-label"><b>Enter Company Name</b></label>
             <input asp-for="Name" type="text" class="form-control">
             <span class="text-danger" asp-validation-for="Name"></span>
         </div>

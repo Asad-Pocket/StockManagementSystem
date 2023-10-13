@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using StockManagementSystem.BusinessObject;
+using StockManagementSystem.Models;
 using StockManagementSystem.Service;
 using StockManagementSystem.UnitOfWorks;
 using System.Diagnostics;
@@ -83,6 +85,48 @@ namespace StockManagementSystem.Controllers
             return View();
         }
         public ActionResult Privacy()
+        {
+            return View();
+        }
+        public IActionResult SearchItem()
+        {
+            var temp = _service.GetCategory().ToList();
+            var categorylist = _mapper.Map<List<CategoryBo>,List<CategoryEo>>(temp);
+            var temp2 = _service.GetCompany().ToList();
+            var companylist = _mapper.Map<List<CompanyBo>, List<CompanyEo>>(temp2);
+            SearchViewItem viewmodel = new SearchViewItem()
+            {
+                Categories = categorylist,
+                Companies = companylist
+            };
+            return View(viewmodel);
+        }
+        [HttpPost]
+        public ActionResult GetItems(int? selectedCompany, int? selectedCategory)
+        {
+            List<ItemEo> items;
+
+            if (selectedCompany.HasValue && !selectedCategory.HasValue)
+            {
+                items = _service.GetItemByCompany(selectedCompany.Value).ToList();
+            }
+            else if (!selectedCompany.HasValue && selectedCategory.HasValue)
+            {
+                items = _service.GetItemByCategory(selectedCategory.Value).ToList();
+            }
+            else if (selectedCompany.HasValue && selectedCategory.HasValue)
+            {
+                items = _service.GetItemByCompanyAndCategory(selectedCompany.Value, selectedCategory.Value).ToList();
+            }
+            else
+            {
+                // Handle the case when neither company nor category is selected
+                items = new List<ItemEo>();
+            }
+            return Json(items);
+        }
+        [HttpPost]
+        public IActionResult SearchItem(List<ItemEo> _items)
         {
             return View();
         }

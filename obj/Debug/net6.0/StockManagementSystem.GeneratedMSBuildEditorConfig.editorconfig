@@ -80,6 +80,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSXRlbVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/AspDotNetProjects/StockManagementSystem/Views/Item/SearchItem.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSXRlbVxTZWFyY2hJdGVtLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/AspDotNetProjects/StockManagementSystem/Views/Item/Show.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSXRlbVxTaG93LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

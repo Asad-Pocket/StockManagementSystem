@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using StockManagementSystem.Models;
 using StockManagementSystem.Repositories;
@@ -71,10 +74,11 @@ namespace StockManagementSystem.Controllers
             return View(item);
         }
         [HttpPost]
-        public IActionResult StockOut(CompanyItemViewModel item)
+        public IActionResult StockOut(CompanyItemViewModel item )
         {
+
             //Update the item's quantity in the database
-            _itemServices.DeleteItemQuantity(item.SelectedItemId, item.StockNewQuantity);
+            _itemServices.DeleteItemQuantity(item.SelectedItemId, item.StockNewQuantity);        
 
             // Return to the StockIn page
             return View("Confirmation");

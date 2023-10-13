@@ -15,7 +15,5 @@ namespace StockManagementSystem.Models
 
         public int SelectedCompanyId { get; set; }
         public int SelectedItemId { get; set; }
-
-
     }
 }

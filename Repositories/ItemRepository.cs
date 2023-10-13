@@ -25,5 +25,16 @@ namespace StockManagementSystem.Repositories
 
             return items;
         }
+        public IEnumerable<Item> GetItemByCategory(int id)
+        {
+            IEnumerable<Item> items = _ctx.ItemList.Where(item => item.CategoryId == id).ToList();
+
+            return items;
+        }
+        public IEnumerable<Item>GetItemByCompanyAndCategory(int ComId,int catId)
+        {
+            IEnumerable<Item> items = _ctx.ItemList.Where(item => item.CompanyId == ComId && item.CategoryId == catId).ToList();
+            return items;
+        }
     }
 }

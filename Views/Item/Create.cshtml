@@ -1,15 +1,14 @@
 ﻿@using StockManagementSystem.Models;
 @model StockManagementSystem.Models.Item
-
 @{
     IEnumerable<Category> _categories = ViewData["_category"] as IEnumerable<Category>;
     IEnumerable<Company> _company = ViewData["_comp"] as IEnumerable<Company>;
     ViewData["Title"] = "Create";
     Layout = "_Layout";
 }
+<p><h3 style="color : brown">Add New Item</h3></p>
 <div class="mt-2" style="width:50%">
     <form asp-action="Create">
-        <h2>Add Item</h2>
         <div class="mb-2">
             <label asp-for="Name" class="form-label"><b>Name</b></label>
             <input asp-for="Name" type="text" class="form-control mt-2">
@@ -24,7 +23,7 @@
             <label asp-for="ReOrderLevel" class="form-label"><b>ReOrder Level</b></label>
             <input asp-for="ReOrderLevel" type="number" class="form-control mt-2">
             <span class="text-danger" asp-validation-for="ReOrderLevel"></span>
-        </div class="mb-2">
+        </div>
             <label asp-for="CategoryId" class="mb-1"for="Category"><b>Category</b></label>
              <select class="form-select mt-2" id="Category" asp-for="CategoryId">
             <option disabled selected>
@@ -36,7 +35,10 @@
                 }
 
              </select>
-            <label asp-for="CompanyId" class="mb-2" for="Company"><b>Company</b></label>
+             <p>
+
+             </p>
+            <label asp-for="CompanyId" class="mb-1" for="Company"><b>Company</b></label>
             <select class="form-select mt-2" id="Company"  P asp-for="CompanyId">
             <option disabled selected>
                 Select Company
@@ -49,9 +51,9 @@
             </select>
             <p>
 
-
             </p>
         <button type="submit" class="btn btn-primary">Submit</button>
         <a href="/Item/Show" class="btn btn-primary">Show All Items</a>
+        <a href="/Item/SearchItem" class="btn btn-primary">SearchItem</a>
     </form>
 </div>

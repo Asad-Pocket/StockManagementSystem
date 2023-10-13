@@ -9,6 +9,7 @@ using CategoryEo = StockManagementSystem.Models.Category;
 using CompanyBo = StockManagementSystem.BusinessObject.Company;
 using CompanyEo = StockManagementSystem.Models.Company;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace StockManagementSystem.Service
 {
@@ -107,6 +108,22 @@ namespace StockManagementSystem.Service
             item.Quantity = item.Quantity - stockInQuantity;
             _UnitOfWork._items.Update(item);
             _UnitOfWork.Save();
+        }
+
+        public IEnumerable<ItemEo> GetItemByCompanyAndCategory(int companyId, int categoryId)
+        {
+            List<ItemEo> _clist = _UnitOfWork._items.GetItemByCompanyAndCategory(companyId,categoryId).ToList();
+            return _clist;
+        }
+        public IEnumerable<ItemEo> GetItemByCompany ( int companyId)
+        {
+            List<ItemEo> _clist = _UnitOfWork._items.GetItemByCompany(companyId).ToList();  
+            return _clist;
+        }
+        public IEnumerable<ItemEo> GetItemByCategory(int categoryId)
+        {
+            List<ItemEo> _clist = _UnitOfWork._items.GetItemByCategory(categoryId).ToList();
+            return _clist;
         }
     }
 }

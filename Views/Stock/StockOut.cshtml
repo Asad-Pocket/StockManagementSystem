@@ -1,13 +1,13 @@
 ﻿@model CompanyItemViewModel;
 @{
-    ViewData["Title"] = "StockIn";
+    ViewData["Title"] = "StockOut";
 }
 <p><center><h3 style="color : brown"> Stocks are Dispatching.</h3></center></p>
 <p><center><h3 style="color : brown"> Please, Make sure to entry the dispatching.</h3></center></p>
 <p>
 
 </p>
-<form action="/Stock/StockOut" method="post">
+<form action="/Stock/StockIn" method="post">
     <div class="container">
         <label asp-for="SelectedCompanyId" class="form-label mt-2"><b>Company</b></label>
         <select class="form-select mt-2" id="companyId" onchange="populateItems()"
@@ -34,29 +34,104 @@
         <input readonly class="form-select mt-2" type="text" name="SelectedItemQuantity" id="quantity" asp-for="SelectedItem.Quantity" placeholder="Quantity" />
         <label class="form-label mt-2"><b>Re-order Level</b></label>
         <input readonly class="form-select mt-2" type="number" name="SelectedItemReorderLevel" id="reorderLevel" asp-for="SelectedItem.ReOrderLevel" placeholder="Reorder Level" />
-        <label asp-for="StockNewQuantity" class="form-label mt-2"><b>New Quantity To Be Added</b></label>
-        <input class="form-select mt-2" type="number" name="StockNewQuantity" id="StockNewQuantity" asp-for="StockNewQuantity" placeholder="Quantity to be dispatch" />
+        <label asp-for="StockNewQuantity" class="form-label mt-2"><b>Quantity To Be Removed</b></label>
+        <input class="form-select mt-2" type="number" name="StockNewQuantity" id="StockNewQuantity" asp-for="StockNewQuantity" placeholder="Quantity to Add" />
         <p>
 
 
         </p>
-        <button type="submit" class="btn btn-primary" value="submit">Submit</button>
-    </div>
+        <button type="button" class="btn btn-primary" onclick="CreateTable()">Add</button>
+        </div>
 </form>
+<table id="mytable" class="table table-bordered caption-top">
+    <caption class="caption-top"><b>List of Items</b></caption>
+    <thead class="table-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Item</th>
+            <th scope="col">Company</th>
+            <th scope="col">Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+        <!-- Sell, Lost, Damaged Buttons -->
+        <div class="form-group mt-2">
+            <button type="submit" name="selectedType" value="sell" class="btn btn-success">Sell</button>
+            <button type="submit" name="selectedType" value="lost" class="btn btn-warning">Lost</button>
+            <button type="submit" name="selectedType" value="damaged" class="btn btn-danger">Damaged</button>
+        </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <script>
 
+    var itemname;
+    var companyname;
+    var quantity;
+    var list = [];
+    var i = 0;
+    var temp = i;
+    function CreateTable() 
+    {
+        var formData = new FormData(document.querySelector('form'));
+
+        // Get the value of the QuantityToChange input field.
+        var quantityToChange = formData.get('StockNewQuantity');
+
+        var selectedItemId = $("#itemId").val();
+
+        var arr = {selectedItemId, itemname, companyname, quantityToChange};
+
+        list.push(arr);
+        
+        let j = i;
+        //Select parentNode of table
+        const table = document.querySelector('table tbody');
+        //Creating an instance of new row
+        const newRow = document.createElement('tr');
+        //creating row objects
+        const serial = document.createElement('td');
+        const itemName = document.createElement('td');
+        const company = document.createElement('td');
+        const quantity = document.createElement('td');
+
+        temp++;
+        //Assigning value
+        serial.textContent = temp;
+        itemName.textContent = list[j][1];
+        company.textContent = list[j][2];
+        quantity.textContent = list[j][3];
+        
+        //assigning child to row instance
+        newRow.appendChild(serial);
+        newRow.appendChild(itemName);
+        newRow.appendChild(company);
+        newRow.appendChild(quantity);
+
+        //appending child or row instance to table
+        table.appendChild(newRow);
+
+        i++;
+    }
     function populateItems() {
         var companyId = $("#companyId").val();
+        // Get the selected option element.
+        var selectedOption = document.querySelector('#companyId option:checked');
+
+        // Get the text of the selected option element.
+        var selectedItemName = selectedOption.textContent;
+
+        // Assign the text of the selected option element to a JavaScript variable.
+        companyname = selectedItemName;
 
         $.ajax({
             url: "/Stock/GetItemsByCompanyId",
             data: { companyId: companyId },
             success: function (data) {
                 $("#itemId").find('option:enabled').remove(); // Clear the options before appending new ones
-                $("#itemId").append('<option value="">Select Item</option>');
+                $("#itemId").append('<option value="">select item</option>');
                 $(data).each(
                     function (key, value) {
                         $("#itemId").append('<option value="' + value.id + '">' + value.name + '</option>');
@@ -80,20 +155,11 @@
 
                 var item = data;
 
-                // Log the Item object to the console
-                console.log("Item: ishan", item);
-
                 $("#quantity").val(item.quantity);
-                console.log("item quantity:", item.quantity);
-                console.log("item reordr:", item.reOrderLevel);
-
+                itemname = item.name;
                 $("#reorderLevel").val(item.reOrderLevel);
-
             }
         });
     }
-
-         // Call the populateItems() function before the updateItemDetails() function
-
+    // Call the populateItems() function before the updateItemDetails() function
 </script>
-

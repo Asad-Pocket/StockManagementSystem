@@ -22,5 +22,8 @@ namespace StockManagementSystem.Service
         List<ItemBo> GetItemsByCompanyId(int companyId);
         void AddItemQuantity(int selectedItemId, int stockInQuantity);
         void DeleteItemQuantity(int selectedItemId, int stockInQuantity);
+        IEnumerable<ItemEo> GetItemByCompany(int companyId);
+        IEnumerable<ItemEo> GetItemByCategory(int categoryId);
+        IEnumerable<ItemEo> GetItemByCompanyAndCategory(int ComId, int catId);
     }
 }
