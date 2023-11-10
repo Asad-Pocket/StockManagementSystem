@@ -10,6 +10,7 @@ using StockManagementSystem.UnitOfWorks;
 using StockManagementSystem.Entities;
 using StockManagementSystem.MembershipServices;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using StockManagementSystem.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,10 +20,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services
     .AddIdentity<ApplicationUser, ApplicationRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddUserManager<ApplicationUserManager>()
     .AddRoleManager<ApplicationRoleManager>()
     .AddSignInManager<ApplicationSignInManager>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
 
@@ -38,10 +39,12 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddTransient<IItemRepository, ItemRepository>();
 builder.Services.AddTransient<ICategoryrepository, CategoryRepository>();
 builder.Services.AddTransient<ICompanyRepository, CompanyRepository>();
+builder.Services.AddTransient<ISoldItemRepository, SoldItemRepository>();
 builder.Services.AddTransient<IApplicationUnitOfWorks, ApplicationUnitOfWorks>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<ICompanyService, CompanyService>();
 builder.Services.AddTransient<IItemService, ItemService>();
+builder.Services.AddTransient<ISoldItemService, SoldItemService>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -98,7 +101,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Account}/{action=Login}/{id?}");
 
 
 app.Run();

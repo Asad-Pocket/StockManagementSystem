@@ -7,113 +7,117 @@
 <p>
 
 </p>
-<form action="/Stock/StockIn" method="post">
-    <div class="container">
-        <label asp-for="SelectedCompanyId" class="form-label mt-2"><b>Company</b></label>
-        <select class="form-select mt-2" id="companyId" onchange="populateItems()"
-                asp-for="SelectedCompanyId">
-            <option disabled selected>
-                Select Company
-            </option>
-            @foreach (var item in Model.Companies)
-            {        
-                <option asp-for="SelectedCompanyId"
-                        onchange="populateItems()"
-                        id="companyId" value="@item.Id">@item.Name</option>
-            }
-        </select>
-        <label asp-for="SelectedItemId" class="form-label mt-2"><b>Item</b></label>
-        <select class="form-select mt-2" id="itemId"  onchange="updateItemDetails()"
-                asp-for="SelectedItemId">
-            <option selected>
-                Select Item
-            </option>
+<div class="container-fluid mb-5">
+    <form  id="myForm"action="/StockOut/StockOut" method="post">
+        <div class="container">
+            <label asp-for="SelectedCompanyId" class="form-label mt-2"><b>Company</b></label>
 
-        </select>
-        <label class="form-label mt-2"><b>Quantity</b></label>
-        <input readonly class="form-select mt-2" type="text" name="SelectedItemQuantity" id="quantity" asp-for="SelectedItem.Quantity" placeholder="Quantity" />
-        <label class="form-label mt-2"><b>Re-order Level</b></label>
-        <input readonly class="form-select mt-2" type="number" name="SelectedItemReorderLevel" id="reorderLevel" asp-for="SelectedItem.ReOrderLevel" placeholder="Reorder Level" />
-        <label asp-for="StockNewQuantity" class="form-label mt-2"><b>Quantity To Be Removed</b></label>
-        <input class="form-select mt-2" type="number" name="StockNewQuantity" id="StockNewQuantity" asp-for="StockNewQuantity" placeholder="Quantity to Add" />
-        <p>
+            <select class="form-select mt-2" id="companyId" onchange="populateItems() "
+                    asp-for="SelectedCompanyId">
+                <option disabled selected>
+                    Select Item....
+                </option>
+                @foreach (var item in Model.Companies)
+                {        
+                    <option asp-for="SelectedCompanyId"
+                            onchange="populateItems()"
+                            id="companyId" value="@item.Id">@item.Name</option>
+                }
+            </select>
+            <label asp-for="SelectedItemId" class="form-label mt-2"><b>Item</b></label>
+
+            <select class="form-select mt-2" id="itemId"  onchange="updateItemDetails()"
+                    asp-for="SelectedItemId">
+                <option selected>
+                    Select Item....
+                </option>
+
+            </select>
+            <label asp-for="SelectedItem.Quantity" class="form-label mt-2"><b>Quantity</b></label>
+            <input readonly class="form-select mt-2" type="number" name="SelectedItemQuantity" id="SelectedItemQuantity" asp-for="SelectedItem.Quantity" placeholder="Quantity" />
+            <label asp-for="SelectedItem.ReOrderLevel" class="form-label mt-2"><b>ReOrder Level</b></label>
+            <input readonly class="form-select mt-2" type="number" name="SelectedItemReorderLevel" id="reorderLevel" asp-for="SelectedItem.ReOrderLevel" placeholder="Reorder Level" />
+            <label for="stockOutQuantity" name="QuantityToChange" id="QuantityToChange" class="form-label mt-2"><b>Stock Out Quantity</b></label>
+            <input type="number" class="form-select mt-2" name="QuantityToChange" id="stockOutQuantity" asp-for="StockNewQuantity" placeholder="Quantity to Minus" />
+            <p>
 
 
-        </p>
-        <button type="button" class="btn btn-primary" onclick="CreateTable()">Add</button>
+            </p>
+            <button type="button" onclick="CreateTable()" class="btn btn-primary" value="submit">ADD</button>
         </div>
-</form>
-<table id="mytable" class="table table-bordered caption-top">
-    <caption class="caption-top"><b>List of Items</b></caption>
-    <thead class="table-light">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Item</th>
-            <th scope="col">Company</th>
-            <th scope="col">Quantity</th>
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
-        <!-- Sell, Lost, Damaged Buttons -->
-        <div class="form-group mt-2">
-            <button type="submit" name="selectedType" value="sell" class="btn btn-success">Sell</button>
-            <button type="submit" name="selectedType" value="lost" class="btn btn-warning">Lost</button>
-            <button type="submit" name="selectedType" value="damaged" class="btn btn-danger">Damaged</button>
-        </div>
+    </form>
+
+    <table id="mytable" class="table table-bordered caption-top">
+        <caption class="caption-top">List of Items</caption>
+        <thead class="table-dark ">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Item</th>
+                <th scope="col">Company</th>
+                <th scope="col">Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <p>
+
+    </p>
+    @*<button type="button" onclick="SellItem(1)" class="btn btn-outline-primary" style="display:inline;">Sell</button>
+    <button type="button" onclick="SellItem(2)" class="btn btn-outline-primary" style="display: inline;">Damage</button>
+    <button type="button" onclick="SellItem(3)" class="btn btn-outline-primary" style="display: inline;">Lost</button>*@
+    <button type="submit" onclick="SellItem(1)" name="selectedType" value="sell" class="btn btn-success">Sell</button>
+    <button type="submit" onclick="SellItem(2)" name="selectedType" value="lost" class="btn btn-warning">Lost</button>
+    <button type="submit" onclick="SellItem(3)" name="selectedType" value="damaged" class="btn btn-danger">Damaged</button>
+</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <script>
 
-    var itemname;
-    var companyname;
+
+    var itemName;
+    var companyName;
     var quantity;
     var list = [];
     var i = 0;
-    var temp = i;
-    function CreateTable() 
-    {
-        var formData = new FormData(document.querySelector('form'));
+    var temp=1;
+    function CreateTable() {
 
-        // Get the value of the QuantityToChange input field.
-        var quantityToChange = formData.get('StockNewQuantity');
+        var quantityToChange = document.getElementById('stockOutQuantity').value;
 
-        var selectedItemId = $("#itemId").val();
 
-        var arr = {selectedItemId, itemname, companyname, quantityToChange};
+        console.log(quantityToChange);
+        var itemId = $("#itemId").val();
+        var date = new Date();
 
-        list.push(arr);
+        var row = { itemId, itemName, companyName, quantityToChange, date };
+
+        list.push(row);
+
         
         let j = i;
-        //Select parentNode of table
         const table = document.querySelector('table tbody');
-        //Creating an instance of new row
+
         const newRow = document.createElement('tr');
-        //creating row objects
         const serial = document.createElement('td');
-        const itemName = document.createElement('td');
+        const itemName1 = document.createElement('td');
         const company = document.createElement('td');
-        const quantity = document.createElement('td');
-
-        temp++;
-        //Assigning value
+        const formQuantity = document.createElement('td');
         serial.textContent = temp;
-        itemName.textContent = list[j][1];
-        company.textContent = list[j][2];
-        quantity.textContent = list[j][3];
-        
-        //assigning child to row instance
-        newRow.appendChild(serial);
-        newRow.appendChild(itemName);
-        newRow.appendChild(company);
-        newRow.appendChild(quantity);
+        itemName1.textContent = itemName;
+        company.textContent = companyName;
+        formQuantity.textContent = quantityToChange;
 
-        //appending child or row instance to table
+        newRow.appendChild(serial);
+        newRow.appendChild(itemName1);
+        newRow.appendChild(company);
+        newRow.appendChild(formQuantity);
+
         table.appendChild(newRow);
 
         i++;
+        temp++;
     }
     function populateItems() {
         var companyId = $("#companyId").val();
@@ -124,7 +128,7 @@
         var selectedItemName = selectedOption.textContent;
 
         // Assign the text of the selected option element to a JavaScript variable.
-        companyname = selectedItemName;
+        companyName = selectedItemName;
 
         $.ajax({
             url: "/Stock/GetItemsByCompanyId",
@@ -140,8 +144,35 @@
         });
     }
 
+    function SellItem(stockOutType) {
+
+        const model = { items: list, stockOutType: stockOutType }
+        var jsonString = JSON.stringify(model);
+
+
+        $.ajax({
+            url: "/Stock/SellItem",
+            method: 'POST',
+            dataType: 'Json',
+            data: jsonString,
+            contentType: 'application/json',
+            success: function (data) {
+                // Handle the response from the server.
+                
+                document.getElementById("myForm").reset();
+                $("mytable").reload();
+                alert("StockOutSuccessfully");
+                location.reload();
+                
+            }
+        });
+
+    }
+
+
     function updateItemDetails() {
         var selectedItemId = $("#itemId").val();
+
 
         // Log the selected item ID to the console
         console.log("Selected item ID:", selectedItemId);
@@ -155,11 +186,21 @@
 
                 var item = data;
 
-                $("#quantity").val(item.quantity);
-                itemname = item.name;
+                // Log the Item object to the console
+                console.log("Item: ishan", item);
+
+                $("#SelectedItemQuantity").val(item.quantity);
+                console.log("item quantity:", item.quantity);
+                console.log("item reordr:", item.reOrderLevel);
+                itemName = item.name;
                 $("#reorderLevel").val(item.reOrderLevel);
+
+
+
             }
         });
     }
-    // Call the populateItems() function before the updateItemDetails() function
+
+         // Call the populateItems() function before the updateItemDetails() function
+
 </script>

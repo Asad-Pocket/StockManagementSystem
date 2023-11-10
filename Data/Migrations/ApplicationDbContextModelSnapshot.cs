@@ -304,6 +304,39 @@ namespace StockManagementSystem.Data.Migrations
                     b.ToTable("ItemList");
                 });
 
+            modelBuilder.Entity("StockManagementSystem.Models.StockOutRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ItemName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("QuantityToChange")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StockOutType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Records");
+                });
+
             modelBuilder.Entity("StockManagementSystem.Entities.ApplicationRoleClaim", b =>
                 {
                     b.HasOne("StockManagementSystem.Entities.ApplicationRole", null)

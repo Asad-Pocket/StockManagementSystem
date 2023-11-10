@@ -14,6 +14,7 @@ namespace StockManagementSystem.Data
         public DbSet<Category> CategoryList { get; set; }
         public DbSet<Company> CompanyList { get; set; }
         public DbSet<Item> ItemList { get; set; }
+        public DbSet<StockOutRecord>Records { get; set; }   
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

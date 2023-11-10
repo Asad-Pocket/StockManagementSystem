@@ -10,6 +10,7 @@ using CompanyBo = StockManagementSystem.BusinessObject.Company;
 using CompanyEo = StockManagementSystem.Models.Company;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using StockManagementSystem.BusinessObjects;
 
 namespace StockManagementSystem.Service
 {
@@ -17,10 +18,22 @@ namespace StockManagementSystem.Service
     {
         private readonly IApplicationUnitOfWorks _UnitOfWork;
         private readonly IMapper _mapper;
-        public ItemService(IApplicationUnitOfWorks works,IMapper mapper)
+        public ItemService(IApplicationUnitOfWorks works, IMapper mapper)
         {
             _UnitOfWork = works;
             _mapper = mapper;
+        }
+        public void DeleteQuantity(List<StockOutRecord> items)
+        {
+
+            foreach (var item in items)
+            {
+                int id = item.ItemId;
+                var itemtodelete = _UnitOfWork._items.GetById(id);
+                itemtodelete.Quantity -= item.QuantityToChange;
+                _UnitOfWork._items.Update(itemtodelete);
+                _UnitOfWork.Save();
+            }
         }
         public void Create(ItemBo item)
         {
@@ -86,6 +99,7 @@ namespace StockManagementSystem.Service
         {
             var obj = _mapper.Map<ItemEo>(_item);
             _UnitOfWork._items.Update(obj);
+            _UnitOfWork.Save();
         }
 
         public List<ItemBo> GetItemsByCompanyId(int companyId)

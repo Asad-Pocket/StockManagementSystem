@@ -19,7 +19,7 @@
 
 
         </p>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Save</button>
         
         <p>
 
@@ -43,8 +43,16 @@
                             @Html.DisplayFor(modelItem => item.Type)
                         </td>
                         <td>
-                            <a class="btn btn-success" href="/Category/Update?id=@item.Id">Edit</a>
-                            <a class="btn btn-danger" href="/Category/Delete?id=@item.Id">Delete</a>
+                            @if (User.IsInRole("StockManager") || User.IsInRole("Admin"))
+                            {
+                                <a class="btn btn-success" href="/Category/Update?id=@item.Id">Edit</a>
+                            }
+
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a class="btn btn-danger" href="/Category/Delete?id=@item.Id">Delete</a>
+                            }
+                            
                         </td>
                     </tr>
                 }

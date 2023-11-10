@@ -5,9 +5,9 @@
 
 <div class="mt-2" style="width:50%">
     <div class="row">
-        <h2>Catagory List</h2>
+        <p><h3 style="color : brown">Category List</h3></p>
         <div class="col-md-4">
-            <a href="/Category/Create" class="btn btn-success">Create Category</a>
+            <a href="/Category/Create" class="btn btn-outline-primary" style="display: inline">Create Category</a>
         </div>
         <p>
 
@@ -30,15 +30,20 @@
                         </td>
 
                         <td>
-                            <a class="btn btn-success" href="/Category/Update?id=@item.Id">Edit</a>
-                            <a class="btn btn-danger" href="/Category/Delete?id=@item.Id">Delete</a>
+                            @if (User.IsInRole("StockManager") || User.IsInRole("Admin"))
+                            {
+                                <a class="btn btn-success" href="/Category/Update?id=@item.Id">Edit</a>
+                            }
+
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a class="btn btn-danger" href="/Category/Delete?id=@item.Id">Delete</a>
+                            }
                         </td>
                     </tr>
                 }
-
             </thead>
-
         </table>
     </div>
-
+    <a class="btn btn-outline-primary" style="display: inline" href="@Url.Action("DownloadCsv", "Category")"><b>Dawonload</b></a>
 </div>

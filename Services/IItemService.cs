@@ -6,6 +6,7 @@ using CategoryEo = StockManagementSystem.Models.Category;
 using CompanyBo = StockManagementSystem.BusinessObject.Company;
 using CompanyEo = StockManagementSystem.Models.Company;
 using StockManagementSystem.BusinessObject;
+using StockManagementSystem.BusinessObjects;
 
 namespace StockManagementSystem.Service
 {
@@ -21,9 +22,10 @@ namespace StockManagementSystem.Service
         Dictionary<string, int> CalculateCategoryCounts();
         List<ItemBo> GetItemsByCompanyId(int companyId);
         void AddItemQuantity(int selectedItemId, int stockInQuantity);
-        void DeleteItemQuantity(int selectedItemId, int stockInQuantity);
+        void DeleteItemQuantity(int selectedItemId, int stockOutQuantity);
         IEnumerable<ItemEo> GetItemByCompany(int companyId);
         IEnumerable<ItemEo> GetItemByCategory(int categoryId);
         IEnumerable<ItemEo> GetItemByCompanyAndCategory(int ComId, int catId);
+        void DeleteQuantity(List<StockOutRecord> items);
     }
 }

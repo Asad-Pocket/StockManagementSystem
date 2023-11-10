@@ -8,6 +8,7 @@ using StockManagementSystem.Models;
 using StockManagementSystem.Service;
 using StockManagementSystem.UnitOfWorks;
 using System.Diagnostics;
+using System.Text;
 using CategoryBo = StockManagementSystem.BusinessObject.Category;
 using CategoryEo = StockManagementSystem.Models.Category;
 using CompanyBo = StockManagementSystem.BusinessObject.Company;
@@ -27,6 +28,7 @@ namespace StockManagementSystem.Controllers
             _service = repo;
             _mapper = mapper;
         }
+        [Authorize(Roles = "StockManager,Admin")]
         public IActionResult Create()
         {
             var Temp_category = _service.GetCategory().ToList();
@@ -50,6 +52,7 @@ namespace StockManagementSystem.Controllers
             var _list = _service.GetAllItem();
             return View(_list);
         }
+        [Authorize(Roles = "StockManager,Admin")]
         public IActionResult Update(int id)
         {
             var catlist = _service.GetCategory();
@@ -68,8 +71,11 @@ namespace StockManagementSystem.Controllers
         {
             var obj = _mapper.Map<ItemBo>(item);
             _service.Update(obj);
+
             return RedirectToAction("Show");
         }
+
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             _service.Delete(id);
@@ -129,6 +135,56 @@ namespace StockManagementSystem.Controllers
         public IActionResult SearchItem(List<ItemEo> _items)
         {
             return View();
+        }
+        public FileContentResult Download2(int? selectedCompany, int? selectedCategory)
+        {
+            List<ItemEo> items;
+
+            if (selectedCompany.HasValue && !selectedCategory.HasValue)
+            {
+                items = _service.GetItemByCompany(selectedCompany.Value).ToList();
+            }
+            else if (!selectedCompany.HasValue && selectedCategory.HasValue)
+            {
+                items = _service.GetItemByCategory(selectedCategory.Value).ToList();
+            }
+            else if (selectedCompany.HasValue && selectedCategory.HasValue)
+            {
+                items = _service.GetItemByCompanyAndCategory(selectedCompany.Value, selectedCategory.Value).ToList();
+            }
+            else
+            {
+                // Handle the case when neither company nor category is selected
+                items = new List<ItemEo>();
+            }
+
+            StringBuilder Csv = new StringBuilder();
+            Csv.AppendLine("Id,Name,Quantity,ReOrderLevel,Category,Company"); // Add headers
+
+            foreach (var item in items)
+            {
+                Csv.AppendLine($"{item.Id},{item.Name},{item.Quantity},{item.ReOrderLevel},{item.Category.Type},{item.Company.Name}");
+            }
+
+            byte[] data = Encoding.UTF8.GetBytes(Csv.ToString());
+            return File(data, "text/csv", "itemlist.csv");
+        }
+
+
+        public FileContentResult DownloadCsv()
+        {
+            List<ItemEo> items = _service.GetAllItem().ToList();  // Retrieve items from the database here
+
+            StringBuilder Csv = new StringBuilder();
+            Csv.AppendLine("Id,Name,Quantity,ReOrderLevel,Category,Company"); // Add headers
+
+            foreach (var item in items)
+            {
+                Csv.AppendLine($"{item.Id},{item.Name},{item.Quantity},{item.ReOrderLevel},{item.Category.Type},{item.Company.Name}");
+            }
+
+            byte[] data = Encoding.UTF8.GetBytes(Csv.ToString());
+            return File(data, "text/csv", "itemlist.csv");
         }
     }
 }

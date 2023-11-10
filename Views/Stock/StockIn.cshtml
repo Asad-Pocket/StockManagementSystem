@@ -43,8 +43,9 @@
         <button type="submit" class="btn btn-primary" value="submit">Submit</button>
     </div>
 </form>
+@section Scripts{
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>*@
 
 <script>
 
@@ -79,9 +80,7 @@
                 $('#reorderLevel').empty();
 
                 var item = data;
-
                 $("#quantity").val(item.quantity);
-
                 $("#reorderLevel").val(item.reOrderLevel);
 
             }
@@ -89,4 +88,4 @@
     }
 
 </script>
-
+}
