@@ -1,0 +1,107 @@
+﻿@using StockManagementSystem.Models;
+@{
+    ViewData["Title"] = "SearchSellItemByDate";
+}
+
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<!-- Add Bootstrap CSS link -->
+
+<h1>SearchSellItemByDate</h1>
+<div>
+
+    <p>Enter Date: <input type="text" id="datepicker-1"></p>
+
+
+    <p>Enter Date: <input type="text" id="datepicker-2"></p>
+
+
+
+    <button type="button" onclick="CreateTable()" class="btn btn-primary mt-2"> Search </button>
+
+    <table id="mytable" class="table table-bordered caption-top mt-2">
+        <thead class="table-dark ">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Item</th>
+                <th scope="col">Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+
+
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#datepicker-1").datepicker();
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#datepicker-2").datepicker();
+    });
+
+</script>
+
+<script>
+    var i = 1;
+    function CreateTable() {
+
+        var selectedDate = $("#datepicker-1").datepicker("getDate");
+        var selectedDate2 = $("#datepicker-2").datepicker("getDate");
+
+        var formattedDate = $.datepicker.formatDate('yy-mm-dd', selectedDate);
+        var formattedDate2 = $.datepicker.formatDate('yy-mm-dd', selectedDate2);
+        console.log("formatted date" + formattedDate);
+
+        const date = { Date1: formattedDate, Date2: formattedDate2 };
+        console.log(date);
+        var jsonstring = JSON.stringify(date);
+        console.log("final string" + jsonstring);
+
+
+
+        $.ajax({
+            url: "/Stock/SearchItems",
+
+            method: 'POST',
+
+            dataType: 'Json',
+
+            data: jsonstring,
+
+            contentType: 'application/json',
+
+            success: function (data) {
+                console.log(data);
+                $.each(data, function (index, item) {
+                    const table = document.querySelector('table tbody');
+
+                    const newRow = document.createElement('tr');
+                    const serial = document.createElement('td');
+                    const itemName1 = document.createElement('td');
+                    const quantity = document.createElement('td');
+                    serial.textContent = i;
+                    itemName1.textContent = item.itemName;
+                    quantity.textContent = item.quantityToChange;
+
+                    newRow.appendChild(serial);
+                    newRow.appendChild(itemName1);
+                    newRow.appendChild(quantity);
+
+                    table.appendChild(newRow);
+                    i++;
+                    })
+            }
+        });
+    }
+</script>
+

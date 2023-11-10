@@ -1,0 +1,37 @@
+﻿
+@model AssignRoleViewModel
+
+<h3>Assign Role to @Model.UserName</h3>
+
+<p>Current Roles: @string.Join(", ", Model.UserRoles)</p>
+
+<form asp-action="AssignRole">
+    <input type="hidden" asp-for="UserId" />
+
+    <div class="form-group">
+
+        <div class="form-group">
+            <label asp-for="UserName">User Name</label>
+            <input asp-for="UserName" class="form-control" readonly />
+        </div>
+        <div class="form-group">
+            <label  class="form-label">Assign Roles</label>
+            @foreach (var role in Model.AllRoles)
+            {
+                <div>
+                    @if (Model.UserRoles != null && Model.UserRoles.Contains(role))
+                    {
+                        <input type="checkbox" name="UserRoles" value="@role" checked />
+                    }
+                    else
+                    {
+                        <input type="checkbox" name="UserRoles" value="@role" />
+                    }
+                    <label>@role</label>
+                </div>
+            }
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Assign Role</button>
+</form>
+
